@@ -11,12 +11,10 @@ export const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     color: "#1b3022",
-    marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
     color: "#6b7c73",
-    marginBottom: 20,
   },
   card: {
     backgroundColor: "#ffffff",
@@ -34,14 +32,31 @@ export const styles = StyleSheet.create({
   primaryButton: {
     backgroundColor: "#1b3022",
     borderRadius: 12,
-    paddingVertical: 14,
+    padding: 14,
     alignItems: "center",
-    marginTop: 15,
   },
   primaryButtonText: {
     color: "#ffffff",
     fontWeight: "600",
     fontSize: 15,
+  },
+  // MODAL
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent backdrop
+  },
+  modalContent: {
+    backgroundColor: "#faf9f5",
+    height: "75%",
+    padding: 20,
+    borderRadius: 10,
+  },
+  inputTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#1b3022",
+    marginBottom: 5,
   },
   input: {
     backgroundColor: "#ffffff",
@@ -52,5 +67,19 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     fontSize: 15,
     marginBottom: 10,
+  },
+
+  // BUTTONS
+  acceptButton: {
+    backgroundColor: "#1b3022",
+    borderRadius: 12,
+    padding: 6,
+    alignItems: "center",
+  },
+  discardButton: {
+    backgroundColor: "#1b3022",
+    borderRadius: 12,
+    padding: 5,
+    alignItems: "center",
   },
 });

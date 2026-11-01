@@ -4,7 +4,7 @@ import { styles } from "../../styles";
 export default function PlanningScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.headerTitle}>Ma semaine</Text>
+      <Text style={styles.headerTitle}>Ma semaine test</Text>
     </View>
   );
 }
