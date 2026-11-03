@@ -16,8 +16,8 @@ export async function getExercises(): Promise<Exercise[]> {
   try {
     const data = await AsyncStorage.getItem(EXERCISES_KEY);
     return data ? JSON.parse(data) : [
-      { id: "1", name: "Squat"},
-      { id: "2", name: "Fentes"},
+      { id: "squat", name: "Squat"},
+      { id: "fente", name: "Fente"},
     ]; // Données par défaut si vide
   } catch (error) {
     console.error("Erreur lecture exercices", error);
@@ -32,3 +32,29 @@ export async function saveExercises(exercises: Exercise[]): Promise<void> {
     console.error("Erreur sauvegarde exercices", error);
   }
 }
+
+// Programs
+export interface Program {
+  id: string;
+  name: string;
+  exercise_list : string[];
+}
+
+export async function getPrograms(): Promise<Program[]> {
+  try {
+    const data = await AsyncStorage.getItem(PROGRAMS_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (error) {
+    console.error("Error getting programs", error);
+    return [];
+  }
+}
+
+export async function savePrograms(programs: Program[]): Promise<void> {
+  try {
+    await AsyncStorage.setItem(PROGRAMS_KEY, JSON.stringify(programs));
+  } catch (error) {
+    console.error("Error when saving programs", error);
+  }
+}
+

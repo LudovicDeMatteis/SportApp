@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   primaryButton: {
     backgroundColor: "#1b3022",
     borderRadius: 12,
-    padding: 14,
+    padding: 10,
     alignItems: "center",
   },
   primaryButtonText: {
@@ -67,6 +67,95 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     fontSize: 15,
     marginBottom: 10,
+  },
+
+  // MODAL MORE OPTIONS
+  optionModalBackdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+  },
+  menuContainer: {
+    position: "absolute",
+    top: 80,
+    right: 20,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    width: 160,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    paddingVertical: 6,
+  },
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  menuText: {
+    marginLeft: 12,
+    fontSize: 16,
+    color: "#1b3022",
+    fontWeight: "500",
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#eee",
+    width: "100%",
+  },
+
+  // DELETE MODAL
+  
+  deleteModalBackdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  deleteModalContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    paddingVertical: 4,
+    alignItems: "center",
+  },
+  deleteModalTitle: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  deleteModalButtonsContainer: {
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    gap: 10,
+    marginBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  deleteModalButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: "#1b3022",
+    borderRadius: 12,
+  },
+  deleteModalButtonText: {
+    marginLeft: 4,
+    fontSize: 16,
+    color: "#ffffff",
+    fontWeight: "800",
   },
 
   // BUTTONS
