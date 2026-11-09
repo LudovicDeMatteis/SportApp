@@ -52,12 +52,18 @@ export default function ExerciseDetailScreen() {
 
   const deleteExerciseFromList = () => {
     setDeleteExerciseConfirm(false);
-    if (typeof id === "string") {
-      deleteExercise(id);
-    }
+    const categoriesToCheck = exercise.categories;
+    deleteExercise(id);
+    categoriesToCheck.forEach((categoryToRemove) => {
+      const isUsedElsewhere = exercises.some((ex) => 
+	ex.id !== id && ex.categories.some((cat) => cat.id === categoryToRemove.id)
+      );
+      if (!isUsedElsewhere) {
+	deleteCategory(categoryToRemove.id);
+      }
+    });
     router.back();
   };
-
 
   // Edit modal
   const acceptEditExercise = async () => {
