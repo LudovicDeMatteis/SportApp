@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { getPrograms, savePrograms, Program } from "../db/storage";
+import {AddStatus} from "../types.tsx";
 
 interface ProgramContextType {
   programs: Program[];
@@ -27,15 +28,18 @@ export function ProgramProvider({ children }: { children: ReactNode }) {
 
   const addProgram = async (name: string) => {
     const cleanedName = name.trim();
-    if (!cleanedName) return false;
+    if (!cleanedName) return "fieldEmpty";
 
     const generatedId = cleanedName.toLowerCase().replace(/\s+/g, "_");
+    const alreadyExists = Boolean(categories.find((ex) => ex.id === generatedId));
+    if (alreadyExists) return "idExists";
+
     const newEx: Program = { id: generatedId, name: cleanedName };
     const updatedPrograms = [...programs, newEx];
 
     setPrograms(updatedPrograms);
     await savePrograms(updatedPrograms);
-    return true;
+    return "success";
   };
 
   const deleteProgram = async (id: string) => {

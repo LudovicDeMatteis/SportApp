@@ -5,20 +5,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const EXERCISES_KEY = "@sportapp_exercises";
 const PROGRAMS_KEY = "@sportapp_programs";
 const PLANNING_KEY = "@sportapp_planning";
+const CATEGORIES_KEY = "@sportapp_categories";
 
 export interface Exercise {
   id: string;
   name: string;
+  categories: string[];
 }
 
 // --- EXERCICES ---
 export async function getExercises(): Promise<Exercise[]> {
   try {
     const data = await AsyncStorage.getItem(EXERCISES_KEY);
-    return data ? JSON.parse(data) : [
-      { id: "squat", name: "Squat"},
-      { id: "fente", name: "Fente"},
-    ]; // Données par défaut si vide
+    return data ? JSON.parse(data) : [];
   } catch (error) {
     console.error("Erreur lecture exercices", error);
     return [];
@@ -57,4 +56,29 @@ export async function savePrograms(programs: Program[]): Promise<void> {
     console.error("Error when saving programs", error);
   }
 }
+
+// Categories
+export interface Category {
+  id: string;
+  name: string;
+}
+
+export async function getCategories(): Promise<Category[]> {
+  try {
+    const data = await AsyncStorage.getItem(CATEGORIES_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (error) {
+    console.error("Error getting categories", error);
+    return [];
+  }
+}
+
+export async function saveCategories(categories: Category[]): Promise<void> {
+  try {
+    await AsyncStorage.setItem(CATEGORIES_KEY, JSON.stringify(categories));
+  } catch (error) {
+    console.error("Error when saving categories", error);
+  }
+}
+
 

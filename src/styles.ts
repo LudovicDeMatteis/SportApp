@@ -68,6 +68,34 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     marginBottom: 10,
   },
+  bubblesContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 10, // Espace avant la barre de recherche
+  },
+  exercisesCategoriesContainer: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "flex-start", 
+    alignItems: "center",
+    gap: 6, 
+    overflowX: "scroll",
+    overflowY: "hidden",
+    maxHeight: 20,
+  },
+  bubbleList: {
+    backgroundColor: "#ffffff",
+    borderRadius: 16,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderWidth: 1,
+    borderColor: "#eae8e1",
+  },
+  bubbleListItem: {
+    fontSize: 10,
+    color: "#1b3022",
+  },
 
   // MODAL MORE OPTIONS
   optionModalBackdrop: {
@@ -170,5 +198,58 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 5,
     alignItems: "center",
+  },
+
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f0f2f1",
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 16,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: "#1b3022",
+  },
+  dropdownContainer: {
+    position: "absolute",
+    top: 40,
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    maxHeight: 200,
+    borderWidth: 1,
+    borderColor: "#eee",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 5,
+    zIndex: 100,
+    paddingVertical: 4,
+  },
+  dropdownItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f9f9f9",
+  },
+  dropdownItemText: {
+    fontSize: 15,
+    color: "#1b3022",
+    fontWeight: "500",
+  },
+  dropdowmEmptyText: {
+    textAlign: "center",
+    color: "#8c9a92",
+    padding: 16,
+    fontSize: 14,
   },
 });

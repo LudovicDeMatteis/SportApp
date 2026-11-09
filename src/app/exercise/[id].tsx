@@ -1,109 +1,149 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, ActivityIndicator, Pressable, Modal, Alert } from "react-native";
-import { useLocalSearchParams, Stack, router} from "expo-router";
+import React, { useState, useEffect } from "react";
+import { Text, View, Pressable } from "react-native";
+import { useLocalSearchParams, Stack, router } from "expo-router";
 import { styles } from "../../styles";
-import { Ionicons } from "@expo/vector-icons"; 
+import { Ionicons } from "@expo/vector-icons";
 import { useExercises } from "../../context/ExerciseContext";
+import { OptionsModal } from "../../components/OptionsModal";
+import { DeleteConfirmModal } from "../../components/DeleteConfirmModal.tsx";
+import { AddExerciseModal } from "../../components/AddExerciseModal";
+import { CategoryBubbles } from "../../components/CategoryBubbles";
+import { useCategories, Category } from "../../context/CategoriesContext.tsx"
 
 export default function ExerciseDetailScreen() {
-  // Catch the [id] parameter from the URL path
   const { id } = useLocalSearchParams();
-  const { exercises, deleteExercise } = useExercises();
+  const { exercises, deleteExercise, updateExercise } = useExercises();
+  const { categories, addCategory, deleteCategory } = useCategories();
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const [deleteExerciseConfirm, setDeleteExerciseConfirm] = useState<boolean>(false);
+  // Edit modal
+  const [isEdittingExercise, setIsEdittingExercise] = useState<boolean>(false);
+  const [newExerciseName, setNewExerciseName] = useState<string>("");
+  const [newExerciseNameError, setNewExerciseNameError] = useState<boolean>("");
+  const [newCategories, setNewCategories] = useState<Category[]>([]);
 
   const exercise = exercises.find((ex) => ex.id === id);
 
   const handleMoreOptions = () => {
     setShowOptions(true);
-  }
+  };
 
   const handleEditExercise = () => {
     setShowOptions(false);
-  }
+    setNewExerciseName(exercise.name);
+    setNewCategories(exercise.categories || []);
+    setIsEdittingExercise(true);
+  };
 
   const handleDeleteExercise = () => {
     setShowOptions(false);
     setDeleteExerciseConfirm(true);
-  }
+  };
 
   const deleteExerciseFromList = () => {
     setDeleteExerciseConfirm(false);
-    deleteExercise(id);
-    router.back()
-  }
+    if (typeof id === "string") {
+      deleteExercise(id);
+    }
+    router.back();
+  };
 
   if (!exercise) {
     return (
       <View style={styles.container}>
+        <Stack.Screen options={{ headerShown: false }} />
         <Text style={styles.headerTitle}>Exercice introuvable</Text>
       </View>
     );
   }
 
+  // Edit modal
+  const acceptEditExercise = async () => {
+    if (!newExerciseName.trim()) {
+      setNewExerciseNameError(true);
+      return;
+    }
+      
+    setNewExerciseNameError(false);
+    await updateExercise(exercise.id, newExerciseName, newCategories);
+
+    setIsEdittingExercise(false);
+  };
+
+  const declineEditExercise = () => {
+    setNewExerciseNameError(false);
+    setNewExerciseName(exercise.name);
+    setNewCategories(exercise.categories);
+    setIsEdittingExercise(false);
+  };
+
+  const handleSelectCategory = (categoryToAdd: Category) => {
+    setNewCategories([...newCategories, categoryToAdd]);
+  };
+
+  const handleRemoveNewCategory = (categoryToRemove: Category) => {
+    setNewCategories(
+      newCategories.filter((cat) => cat.id !== categoryToRemove.id)
+    );
+    const isUsedElsewhere = exercises.some((ex) => 
+      ex.categories.some((cat) => cat.id === categoryToRemove.id)
+    );
+    if (!isUsedElsewhere) {
+      deleteCategory(categoryToRemove.id);
+    }
+  };
+
+  const handleCreateCategory = async (query: string) => {
+    const newCat: Category = await addCategory(query);
+    handleSelectCategory(newCat);
+  };
+
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
-      <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20}}>
-	<Pressable onPress={() => router.back()}>
-	  <Ionicons name="arrow-back-circle-outline" size={35} color={"#1b3022"}/>
-	</Pressable>
-	<Text style={styles.headerTitle}>{exercise.name}</Text>
-	<Pressable onPress={() => handleMoreOptions()}>
-	  <Ionicons name="ellipsis-horizontal-outline" size={35} color={"#1b3022"}/>
-	</Pressable>
-      </View>
-      {/* More options modal */}
-      <Modal
-        visible={showOptions}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => setShowOptions(false)}
-      >
-        <Pressable 
-          style={styles.optionModalBackdrop} 
-          onPress={() => setShowOptions(false)}
-        >
-	  {/* <View style={styles.modalOverlay}> */}
-          <View style={styles.menuContainer}>
-            <Pressable style={styles.menuItem} onPress={() => handleEditExercise()}>
-              <Ionicons name="create-outline" size={20} color="#1b3022" />
-              <Text style={styles.menuText}>Modifier</Text>
-            </Pressable>
-
-            <View style={styles.separator} />
-
-            <Pressable style={styles.menuItem} onPress={() => handleDeleteExercise()}>
-              <Ionicons name="trash-outline" size={20} color="#d9534f" />
-              <Text style={[styles.menuText, { color: "#d9534f" }]}>Supprimer</Text>
-            </Pressable>
-          </View>
+      
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+        <Pressable onPress={() => router.back()}>
+          <Ionicons name="arrow-back-circle-outline" size={35} color={"#1b3022"} />
         </Pressable>
-      </Modal>
-      <Modal
-	visible={deleteExerciseConfirm}
-	transparent={true}
-	animationType="fade"
-	onRequestClose={() => setDeleteExerciseConfirm(false)}
-      >
-	<Pressable style={styles.deleteModalBackdrop} onPress={() => setDeleteExerciseConfirm(false)}>
-	  <View style={styles.deleteModalContainer}>
-	    <Text style={styles.deleteModalTitle}> Supprimer l'exercice ? </Text>   
-	    <View style={styles.deleteModalButtonsContainer}>
-	      <Pressable style={styles.deleteModalButton} onPress={() => setDeleteExerciseConfirm(false)}>
-		<Ionicons name="close-outline" size={20} color="#ffffff" />
-		<Text style={styles.deleteModalButtonText}>Annuler</Text>
-	      </Pressable>
-	      <Pressable style={[styles.deleteModalButton, {backgroundColor: "#d9534f"}]} onPress={() => deleteExerciseFromList()}>
-		<Ionicons name="trash-outline" size={20} color="#ffffff" />
-		<Text style={styles.deleteModalButtonText}>Supprimer</Text>
-	      </Pressable>
-	    </View>
-	  </View>
-	</Pressable>
-      </Modal>
+        <Text style={styles.headerTitle}>{exercise.name}</Text>
+        <Pressable onPress={handleMoreOptions}>
+          <Ionicons name="ellipsis-horizontal-outline" size={35} color={"#1b3022"} />
+        </Pressable>
+      </View>
 
+      {/* Show associated categories using your reusable component */}
+      <View style={{ marginBottom: 16 }}>
+        <Text style={styles.inputTitle}>Catégories associées</Text>
+        <CategoryBubbles categories={exercise.categories || []} />
+      </View>
+
+      <OptionsModal
+        visible={showOptions}
+        onClose={() => setShowOptions(false)}
+        onEdit={handleEditExercise}
+        onDelete={handleDeleteExercise}
+      />
+
+      <DeleteConfirmModal
+        visible={deleteExerciseConfirm}
+        onClose={() => setDeleteExerciseConfirm(false)}
+        onConfirm={deleteExerciseFromList}
+      />
+      <AddExerciseModal
+	title={"Modifier un exercice"}
+        visible={isEdittingExercise}
+        exerciseName={newExerciseName}
+        setExerciseName={setNewExerciseName}
+        nameError={newExerciseNameError}
+        selectedCategories={newCategories}
+        allCategories={categories}
+        onSelectCategory={handleSelectCategory}
+        onRemoveCategory={handleRemoveNewCategory}
+        onCreateCategory={handleCreateCategory}
+        onAccept={acceptEditExercise}
+        onDecline={declineEditExercise}
+      />
     </View>
-  );  
-
+  );
 }
