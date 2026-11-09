@@ -30,7 +30,7 @@ export function CategorySearchDropdown({
   });
 
   return (
-    <View style={{ position: "relative", zIndex: 10 }}>
+    <View style={{ position: "relative", zIndex: 10, marginBottom: 10 }}>
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={20} color="#8c9a92" style={{ marginRight: 8 }} />
         <TextInput

@@ -28,7 +28,7 @@ export function ExerciseProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   };
 
-  const addExercise = async (name: string, categories: string[]): Promise<AddStatus> => {
+  const addExercise = async (name: string, categories: string[], notes: string): Promise<AddStatus> => {
     const cleanedName = name.trim();
     if (!cleanedName) return "fieldEmpty";
 
@@ -36,7 +36,7 @@ export function ExerciseProvider({ children }: { children: ReactNode }) {
     const alreadyExists = Boolean(exercises.find((ex) => ex.id === generatedId));
     if (alreadyExists) return "idExists";
 
-    const newEx: Exercise = { id: generatedId, name: cleanedName, categories: categories };
+    const newEx: Exercise = { id: generatedId, name: cleanedName, categories: categories, notes: notes };
     const updatedExercises = [...exercises, newEx];
 
     setExercises(updatedExercises);
@@ -44,13 +44,13 @@ export function ExerciseProvider({ children }: { children: ReactNode }) {
     return "success";
   };
 
-  const updateExercise = async (id: string, name: string, categories: Category[]) => {
+  const updateExercise = async (id: string, name: string, categories: Category[], notes: string) => {
     const cleanedName = name.trim();
     if (!cleanedName) return;
 
     const updatedExercises = exercises.map((ex) => {
       if (ex.id === id) {
-        return { ...ex, name: cleanedName, categories };
+        return { ...ex, name: cleanedName, categories: categories, notes: notes };
       }
       return ex;
     });

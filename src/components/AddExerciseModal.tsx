@@ -7,6 +7,7 @@ import { CategorySearchDropdown } from "./CategorySearchDropdown";
 import { styles as globalStyles } from "../styles.ts";
 
 interface AddExerciseModalProps {
+  title: string;
   visible: boolean;
   exerciseName: string;
   setExerciseName: (name: string) => void;
@@ -16,6 +17,8 @@ interface AddExerciseModalProps {
   onSelectCategory: (category: Category) => void;
   onRemoveCategory: (category: Category) => void;
   onCreateCategory: (query: string) => void;
+  notes: string;
+  setNotes: (notes: string) => void;
   onAccept: () => void;
   onDecline: () => void;
 }
@@ -31,6 +34,8 @@ export function AddExerciseModal({
   onSelectCategory,
   onRemoveCategory,
   onCreateCategory,
+  notes,
+  setNotes,
   onAccept,
   onDecline,
 }: AddExerciseModalProps) {
@@ -65,6 +70,18 @@ export function AddExerciseModal({
             onSelectCategory={onSelectCategory}
             onCreateCategory={onCreateCategory}
           />
+          <Text style={globalStyles.inputTitle}>Notes</Text>
+          <TextInput
+            style={globalStyles.notesInput}
+            placeholder="Description de l'exercice, indications supplementaires..."
+            placeholderTextColor="#8c9a92"
+            value={notes}
+            onChangeText={setNotes}
+	    multiline={true}
+	    numberOfLines={4}
+	    textAlignVertical="top"
+          />
+
         </View>
       </View>
     </Modal>

@@ -17,9 +17,11 @@ export default function BibliothequeScreen() {
   const [newExerciseName, setNewExerciseName] = useState("");
   const [newExerciseNameError, setNewExerciseNameError] = useState<boolean>(false);
   const [newCategories, setNewCategories] = useState<Category[]>([]);
+  const [newNotes, setNewNotes] = useState<string>("");
 
   const acceptNewExercise = async () => {
-    const addStatus: AddStatus = await addExercise(newExerciseName, newCategories);
+    console.log(newNotes);
+    const addStatus: AddStatus = await addExercise(newExerciseName, newCategories, newNotes);
     if (addStatus === "fieldEmpty") {
       setNewExerciseNameError(true);
       return;
@@ -30,6 +32,7 @@ export default function BibliothequeScreen() {
     setNewExerciseNameError(false);
     setNewExerciseName("");
     setNewCategories([]);
+    setNewNotes("");
     setIsAddingExercise(false);
   };
 
@@ -37,6 +40,7 @@ export default function BibliothequeScreen() {
     setNewExerciseNameError(false);
     setNewExerciseName("");
     setNewCategories([]);
+    setNewNotes("");
     setIsAddingExercise(false);
   };
 
@@ -104,6 +108,8 @@ export default function BibliothequeScreen() {
         onSelectCategory={handleSelectCategory}
         onRemoveCategory={handleRemoveNewCategory}
         onCreateCategory={handleCreateCategory}
+	notes={newNotes}
+	setNotes={setNewNotes}
         onAccept={acceptNewExercise}
         onDecline={declineNewExercise}
       />

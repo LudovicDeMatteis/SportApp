@@ -21,8 +21,17 @@ export default function ExerciseDetailScreen() {
   const [newExerciseName, setNewExerciseName] = useState<string>("");
   const [newExerciseNameError, setNewExerciseNameError] = useState<boolean>("");
   const [newCategories, setNewCategories] = useState<Category[]>([]);
+  const [newNotes, setNewNotes] = useState<string>("");
 
   const exercise = exercises.find((ex) => ex.id === id);
+  if (!exercise) {
+    return (
+      <View style={styles.container}>
+        <Stack.Screen options={{ headerShown: false }} />
+        <Text style={styles.headerTitle}>Exercice introuvable</Text>
+      </View>
+    );
+  }
 
   const handleMoreOptions = () => {
     setShowOptions(true);
@@ -31,7 +40,8 @@ export default function ExerciseDetailScreen() {
   const handleEditExercise = () => {
     setShowOptions(false);
     setNewExerciseName(exercise.name);
-    setNewCategories(exercise.categories || []);
+    setNewCategories(exercise.categories);
+    setNewNotes(exercise.notes);
     setIsEdittingExercise(true);
   };
 
@@ -48,14 +58,6 @@ export default function ExerciseDetailScreen() {
     router.back();
   };
 
-  if (!exercise) {
-    return (
-      <View style={styles.container}>
-        <Stack.Screen options={{ headerShown: false }} />
-        <Text style={styles.headerTitle}>Exercice introuvable</Text>
-      </View>
-    );
-  }
 
   // Edit modal
   const acceptEditExercise = async () => {
@@ -63,10 +65,8 @@ export default function ExerciseDetailScreen() {
       setNewExerciseNameError(true);
       return;
     }
-      
     setNewExerciseNameError(false);
-    await updateExercise(exercise.id, newExerciseName, newCategories);
-
+    await updateExercise(exercise.id, newExerciseName, newCategories, newNotes);
     setIsEdittingExercise(false);
   };
 
@@ -74,6 +74,7 @@ export default function ExerciseDetailScreen() {
     setNewExerciseNameError(false);
     setNewExerciseName(exercise.name);
     setNewCategories(exercise.categories);
+    setNewNotes(exercise.notes);
     setIsEdittingExercise(false);
   };
 
@@ -112,10 +113,13 @@ export default function ExerciseDetailScreen() {
         </Pressable>
       </View>
 
-      {/* Show associated categories using your reusable component */}
-      <View style={{ marginBottom: 16 }}>
-        <Text style={styles.inputTitle}>Catégories associées</Text>
+      <View style={{ marginBottom: 16, justifyContent: "center", alignItems: "center" }}>
         <CategoryBubbles categories={exercise.categories || []} />
+      </View>
+
+      <View style={styles.notesCard}>
+	<Text style={styles.notesTitle}>Notes</Text>
+	<Text style={styles.notesText}>{exercise.notes}</Text>
       </View>
 
       <OptionsModal
@@ -141,6 +145,8 @@ export default function ExerciseDetailScreen() {
         onSelectCategory={handleSelectCategory}
         onRemoveCategory={handleRemoveNewCategory}
         onCreateCategory={handleCreateCategory}
+	notes={newNotes}
+	setNotes={setNewNotes}
         onAccept={acceptEditExercise}
         onDecline={declineEditExercise}
       />
