@@ -166,7 +166,6 @@ export const styles = StyleSheet.create({
   },
 
   // DELETE MODAL
-  
   deleteModalBackdrop: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.3)",
@@ -216,7 +215,22 @@ export const styles = StyleSheet.create({
     color: "#ffffff",
     fontWeight: "800",
   },
-
+  addBlocModalButtonCenter: {
+    alignItems: "center",
+    justifyContent: "center", 
+    width: "100%",
+  },
+  addBlocModalButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: "#1b3022",
+    borderRadius: 12,
+    width: 200,
+    marginBottom: 10,
+  },
   // BUTTONS
   acceptButton: {
     backgroundColor: "#1b3022",
@@ -283,4 +297,111 @@ export const styles = StyleSheet.create({
     padding: 16,
     fontSize: 14,
   },
+
+  // New program modal
+  newProgramModalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  newProgramModalContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    paddingVertical: 4,
+    alignItems: "center",
+  },
+  newProgramModalTitle: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  newProgramModalButtonsContainer: {
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    gap: 10,
+    marginBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  newProgramModalButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: "#1b3022",
+    borderRadius: 12,
+  },
+  newProgramModalButtonText: {
+    marginLeft: 4,
+    fontSize: 16,
+    color: "#ffffff",
+    fontWeight: "800",
+  },
+  optionsButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: "#1b3022",
+    borderRadius: 12,
+    width: "100%",
+    marginBottom: 10,
+  },
+  // Programs bloc cards
+  blocCard: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    marginBottom: 0,
+  },
+  blocCardActionsLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 12,
+    paddingTop: 2,
+  },
+  blocCardTitle: {
+    fontWeight: "bold",
+    fontSize: 14,
+    color: "#1b3022",
+    marginBottom: 6,
+    marginRight: 6,
+  },
+  blocCardExerciseItemRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 4,
+  },
+  blocCardExerciseName: {
+    fontSize: 13,
+    color: "#333",
+    flex: 1,
+  },
+  blocCardExerciseDetails: {
+    fontSize: 12,
+    color: "#666",
+    marginLeft: 8,
+  },
+  blocCardBreakTimeText: {
+    fontSize: 12,
+    color: "#6c757d",
+    fontStyle: "italic",
+    marginLeft: 16,
+    marginTop: 2,
+  },
+
 });

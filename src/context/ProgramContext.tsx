@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { getPrograms, savePrograms, Program } from "../db/storage";
-import {AddStatus} from "../types.tsx";
+import { getPrograms, savePrograms, Program, Bloc, BlocItem } from "../db/storage";
 
 interface ProgramContextType {
   programs: Program[];
   loading: boolean;
-  addProgram: (name: string) => Promise<boolean>;
+  addEmptyProgram: (name: string) => Promise<string>;
+  updateProgram: (id: string, updatedData: Partial<Program>) => Promise<void>;
   deleteProgram: (id: string) => Promise<void>;
 }
 
@@ -26,20 +26,29 @@ export function ProgramProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   };
 
-  const addProgram = async (name: string) => {
+  const addEmptyProgram = async (name: string) => {
     const cleanedName = name.trim();
     if (!cleanedName) return "fieldEmpty";
 
     const generatedId = cleanedName.toLowerCase().replace(/\s+/g, "_");
-    const alreadyExists = Boolean(categories.find((ex) => ex.id === generatedId));
+    const alreadyExists = Boolean(programs.find((prg) => prg.id === generatedId));
     if (alreadyExists) return "idExists";
 
-    const newEx: Program = { id: generatedId, name: cleanedName };
+    const newEx: Program = { id: generatedId, name: cleanedName, blocs: [], categories: [] };
     const updatedPrograms = [...programs, newEx];
 
     setPrograms(updatedPrograms);
     await savePrograms(updatedPrograms);
-    return "success";
+    return generatedId;
+  };
+
+  const updateProgram = async (id: string, updatedData: Partial<Program>) => {
+    const updatedPrograms = programs.map((program) =>
+      program.id === id ? { ...program, ...updatedData } : program
+    );
+
+    setPrograms(updatedPrograms);
+    await savePrograms(updatedPrograms);
   };
 
   const deleteProgram = async (id: string) => {
@@ -49,7 +58,7 @@ export function ProgramProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <ProgramContext.Provider value={{ programs, loading, addProgram, deleteProgram }}>
+    <ProgramContext.Provider value={{ programs, loading, addEmptyProgram, deleteProgram, updateProgram }}>
       {children}
     </ProgramContext.Provider>
   );

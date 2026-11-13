@@ -4,22 +4,42 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router"; 
 import { styles } from "../../styles";
 import { usePrograms } from "../../context/ProgramContext";
+import {NewProgramModal } from "../../components/NewProgramModal.tsx"
 
 export default function ProgrammesScreen() {
-  const { programs, addProgram } = usePrograms();
+  const { programs, addEmptyProgram, deleteProgram } = usePrograms();
 
   const [isAddingProgram, setIsAddingProgram] = useState<boolean>(false);
   const [newProgramName, setNewProgramName] = useState("");
-  const [newProgramNameError, setNewProgramNameError] = useState<boolean>(false);
+  const [newProgramNameExistsError, setNewProgramNameExistsError] = useState<boolean>(false);
+  const [newProgramNameEmptyError, setNewProgramNameEmptyError] = useState<boolean>(false);
 
   const handleAddProgram = () => {
     setIsAddingProgram(true);
   }
   
-  const acceptNewProgram = () => {
+  const acceptNewProgram = async () => {
+    setNewProgramNameExistsError(false);
+    setNewProgramNameEmptyError(false);
+    const newProgramId = await addEmptyProgram(newProgramName);
+    if (newProgramId === "fieldEmpty") {
+      setNewProgramNameEmptyError(true);
+      return
+    }
+    if (newProgramId === "idExists") {
+      setNewProgramNameExistsError(true);
+      return
+    }
+    setIsAddingProgram(false);
+    setNewProgramName("");
+    router.push(`/program/${newProgramId}/edit`);
   }
 
   const declineNewProgram = () => {
+    setIsAddingProgram(false);
+    setNewProgramName("");
+    setNewProgramNameExistsError(false);
+    setNewProgramNameEmptyError(false);
   }
   
   return (
@@ -39,7 +59,7 @@ export default function ProgrammesScreen() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
 	  <Pressable 
-	    onPress={() => router.push(`/exercise/${item.id}`)}
+	    onPress={() => {console.log(item.id); router.push(`/program/${item.id}/details`)}}
 	  >
 	    <View style={styles.card}>
 	      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -52,36 +72,15 @@ export default function ProgrammesScreen() {
 	  </Pressable>
         )}
       />
-      <Modal
-          animationType="slide"
-	  transparent={true}
-          visible={isAddingProgram}
-          onRequestClose={() => {
-            setIsAddingProgram(false);
-          }}>
-	  <View style={styles.modalOverlay}>
-	    <View style={styles.modalContent}>
-	      <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20}}>
-		<Pressable onPress={() => declineNewProgram()}>
-		  <Ionicons name="close-circle-outline" size={35} color={"#1b3022"}/>
-		</Pressable>
-		<Text style={styles.headerTitle}>Ajouter un programme</Text>
-		<Pressable onPress={() => acceptNewProgram()}>
-		  <Ionicons name="checkmark-circle-outline" size={35} color={"#1b3022"}/>
-		</Pressable>
-	      </View>
-	      <Text style={styles.inputTitle}>Nom du programme*</Text>
-	      <TextInput
-		style={styles.input}
-		placeholder="Epaules, Core, Souplesse, ..."
-		placeholderTextColor="#8c9a92"
-		value={newProgramName}
-		onChangeText={setNewProgramName}
-	      />
-	      {newProgramNameError && (<Text style={{color: "#ff0000"}}> Champ requis </Text>)}
-	    </View>
-	  </View>
-      </Modal>
+      <NewProgramModal
+	visible={isAddingProgram}
+	onClose={declineNewProgram}
+	onConfirm={acceptNewProgram}
+	programName={newProgramName}
+	setProgramName={setNewProgramName}
+	programNameExistsError={newProgramNameExistsError}
+	programNameEmptyError={newProgramNameEmptyError}
+      />
     </View>
   );
 }

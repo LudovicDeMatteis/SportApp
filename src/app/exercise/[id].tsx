@@ -9,11 +9,13 @@ import { DeleteConfirmModal } from "../../components/DeleteConfirmModal.tsx";
 import { AddExerciseModal } from "../../components/AddExerciseModal";
 import { CategoryBubbles } from "../../components/CategoryBubbles";
 import { useCategories, Category } from "../../context/CategoriesContext.tsx"
+import { usePrograms } from "../../context/ProgramContext.tsx";
 
 export default function ExerciseDetailScreen() {
   const { id } = useLocalSearchParams();
   const { exercises, deleteExercise, updateExercise } = useExercises();
   const { categories, addCategory, deleteCategory } = useCategories();
+  const { programs } = usePrograms();
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const [deleteExerciseConfirm, setDeleteExerciseConfirm] = useState<boolean>(false);
   // Edit modal
@@ -92,10 +94,13 @@ export default function ExerciseDetailScreen() {
     setNewCategories(
       newCategories.filter((cat) => cat.id !== categoryToRemove.id)
     );
-    const isUsedElsewhere = exercises.some((ex) => 
+    const isUsedInAnyExercise = exercises.some((ex) => 
       ex.categories.some((cat) => cat.id === categoryToRemove.id)
     );
-    if (!isUsedElsewhere) {
+    const isUsedInAnyProgram = programs.some((prg) => 
+      prg.categories.some((cat) => cat.id === categoryToRemove.id)
+    );
+    if (!isUsedInAnyExercise && !isUsedInAnyProgram) {
       deleteCategory(categoryToRemove.id);
     }
   };

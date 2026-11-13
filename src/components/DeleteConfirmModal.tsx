@@ -10,6 +10,7 @@ interface DeleteConfirmModalProps {
 }
 
 export function DeleteConfirmModal({
+  title="Supprimer l'exercice ?",
   visible,
   onClose,
   onConfirm,
@@ -23,7 +24,7 @@ export function DeleteConfirmModal({
     >
       <Pressable style={globalStyles.deleteModalBackdrop} onPress={onClose}>
         <View style={globalStyles.deleteModalContainer}>
-          <Text style={globalStyles.deleteModalTitle}> Supprimer l'exercice ? </Text>
+          <Text style={globalStyles.deleteModalTitle}> {title} </Text>
           <View style={globalStyles.deleteModalButtonsContainer}>
             <Pressable style={globalStyles.deleteModalButton} onPress={onClose}>
               <Ionicons name="close-outline" size={20} color="#ffffff" />

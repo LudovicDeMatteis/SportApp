@@ -34,10 +34,26 @@ export async function saveExercises(exercises: Exercise[]): Promise<void> {
 }
 
 // Programs
+export interface BlocItem {
+  instanceId: string;
+  exercise: Exercise;
+  reps: string;
+  breakTime: number;
+}
+
+export interface Bloc {
+  blocId: string;
+  items: BlocItem[];
+  reps: number;
+  repsBreakTime: number;
+  finalBreakTime: number;
+}
+
 export interface Program {
   id: string;
   name: string;
-  exercise_list : string[];
+  blocs : Bloc[];
+  categories: string[];
 }
 
 export async function getPrograms(): Promise<Program[]> {
