@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, View, Text, TextInput, Pressable } from "react-native";
+import { Modal, View, Text, TextInput, Pressable, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Category } from "../../context/CategoriesContext.tsx";
 import { CategoryBubbles } from "./CategoryBubbles";
@@ -43,45 +43,56 @@ export function AddExerciseModal({
     <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onDecline}>
       <View style={globalStyles.modalOverlay}>
         <View style={globalStyles.modalContent}>
-          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-            <Pressable onPress={onDecline}>
-              <Ionicons name="close-circle-outline" size={35} color={"#1b3022"} />
-            </Pressable>
-            <Text style={globalStyles.headerTitle}>{title}</Text>
-            <Pressable onPress={onAccept}>
-              <Ionicons name="checkmark-circle-outline" size={35} color={"#1b3022"} />
-            </Pressable>
-          </View>
+	  <KeyboardAvoidingView 
+	    behavior={Platform.OS === "ios" ? "padding" : "height"} 
+	    style={{ flex: 1 }}
+	  >
+	    <ScrollView 
+	      contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
+	      keyboardShouldPersistTaps="handled"
+	    >
+	      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+		<Pressable onPress={onDecline}>
+		  <Ionicons name="close-circle-outline" size={35} color={"#1b3022"} />
+		</Pressable>
+		<Text style={globalStyles.headerTitle}>{title}</Text>
+		<Pressable onPress={onAccept}>
+		  <Ionicons name="checkmark-circle-outline" size={35} color={"#1b3022"} />
+		</Pressable>
+	      </View>
 
-          <Text style={globalStyles.inputTitle}>Nom de l'exercice*</Text>
-          <TextInput
-            style={globalStyles.input}
-            placeholder="Squat, Pompe diamant, ..."
-            placeholderTextColor="#8c9a92"
-            value={exerciseName}
-            onChangeText={setExerciseName}
-          />
-          {nameError && <Text style={{ color: "#ff0000", marginBottom: 8 }}>Champ requis</Text>}
-          <Text style={globalStyles.inputTitle}>Categories</Text>
-          <CategoryBubbles categories={selectedCategories} onRemove={onRemoveCategory} />
-          <CategorySearchDropdown
-            categories={allCategories}
-            selectedCategories={selectedCategories}
-            onSelectCategory={onSelectCategory}
-            onCreateCategory={onCreateCategory}
-          />
-          <Text style={globalStyles.inputTitle}>Notes</Text>
-          <TextInput
-            style={globalStyles.notesInput}
-            placeholder="Description de l'exercice, indications supplementaires..."
-            placeholderTextColor="#8c9a92"
-            value={notes}
-            onChangeText={setNotes}
-	    multiline={true}
-	    numberOfLines={4}
-	    textAlignVertical="top"
-          />
-
+	      <Text style={globalStyles.inputTitle}>Nom de l'exercice*</Text>
+	      <TextInput
+		style={globalStyles.input}
+		placeholder="Squat, Pompe diamant, ..."
+		placeholderTextColor="#8c9a92"
+		value={exerciseName}
+		onChangeText={setExerciseName}
+	      />
+	      {nameError && <Text style={{ color: "#ff0000", marginBottom: 8 }}>Champ requis</Text>}
+	      <Text style={globalStyles.inputTitle}>Categories</Text>
+	      <View style={{marginBottom: "14",}}>
+		<CategoryBubbles categories={selectedCategories} onRemove={onRemoveCategory} />
+	      </View>
+	      <CategorySearchDropdown
+		categories={allCategories}
+		selectedCategories={selectedCategories}
+		onSelectCategory={onSelectCategory}
+		onCreateCategory={onCreateCategory}
+	      />
+	      <Text style={globalStyles.inputTitle}>Notes</Text>
+	      <TextInput
+		style={globalStyles.notesInput}
+		placeholder="Description de l'exercice, indications supplementaires..."
+		placeholderTextColor="#8c9a92"
+		value={notes}
+		onChangeText={setNotes}
+		multiline={true}
+		numberOfLines={4}
+		textAlignVertical="top"
+	      />
+	    </ScrollView>
+	  </KeyboardAvoidingView>
         </View>
       </View>
     </Modal>

@@ -137,6 +137,7 @@ const handleNewBlocAccept = () => {
       instanceId: `ex-${nextBlocItemId}`, 
       exercise: exerciseToAdd,
       reps: "",
+      type: "reps",
       breakTime: "",
     };
     setNewBlocItems([...newBlocItems, newItem]);
@@ -147,7 +148,7 @@ const handleNewBlocAccept = () => {
     setNewBlocItems(newBlocItems.filter((item) => item.instanceId !== instanceIdToRemove));
   };
 
-  const handleUpdateItemField = (instanceId: string, field: "reps" | "breakTime", value: string) => {
+  const handleUpdateItemField = (instanceId: string, field: "reps" | "breakTime" | "type", value: string) => {
     setNewBlocItems(
       newBlocItems.map((item) => 
 	item.instanceId === instanceId ? { ...item, [field]: value } : item
@@ -278,11 +279,15 @@ const handleNewBlocAccept = () => {
                         - {exerciseItem.exercise.name}
                       </Text>
                       <Text style={styles.blocCardExerciseDetails}>
-                        {exerciseItem.reps ? `${exerciseItem.reps} reps` : ""} 
+                        {exerciseItem.reps ? `${exerciseItem.reps} ${exerciseItem.type === "reps" ? "reps" : "s"}` : ""} 
                         {exerciseItem.breakTime ? ` (pause: ${exerciseItem.breakTime}s)` : ""}
                       </Text>
                     </View>
                   ))}
+		  <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
+		    <Ionicons name="hourglass-outline" size={16} color="#1b3022" />
+		    <Text style={styles.blocCardTitle}> Temps de pause final : {item.finalBreakTime} s </Text>
+                  </View>
                 </View>
 
 		<View style={{flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>

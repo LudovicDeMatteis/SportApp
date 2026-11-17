@@ -5,7 +5,7 @@ import { styles } from "../../../styles";
 import { Ionicons } from "@expo/vector-icons";
 
 import { usePrograms, Bloc, BlocItem } from "../../../context/ProgramContext.tsx";
-import { OptionsModal } from "../../../components/OptionsModal";
+import { ProgramOptionsModal } from "../../../components/ProgramOptionsModal";
 import { DeleteConfirmModal } from "../../../components/DeleteConfirmModal.tsx";
 import { CategoryBubbles } from "../../../components/CategoryBubbles";
 
@@ -45,6 +45,11 @@ export default function ProgramDetailScreen() {
     router.back();
   };
 
+  const handleStartProgram = () => {
+    setShowOptions(false);
+    router.push(`/program/${id}/start`);
+  }
+
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
@@ -63,46 +68,57 @@ export default function ProgramDetailScreen() {
         <CategoryBubbles categories={program.categories || []} />
       </View>
 
-      <Text style={styles.inputTitle}>Deroulement</Text>
       <View style={{ flex: 1, marginBottom: 10 }}>
         <FlatList
           data={program.blocs}
           keyExtractor={(item) => item.blocId}
           renderItem={({ item, index }) => (
             <View style={{ marginBottom: 8 }}>
-              <View style={[styles.card, styles.blocCard]}>
-                <View style={{ flex: 1 }}>
-		  <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
-		    <Text style={styles.blocCardTitle}> Bloc {index + 1} </Text>
+                <View style={styles.PrgBlocCard}>
+		  <View style={{ flexDirection: "row", justifyContent: "center" }}>
+		    <Text style={styles.PrgDetailsBlocTitle}> Bloc {index + 1} </Text>
+                  </View>
+		  <View style={{ flexDirection: "row", justifyContent: "center" }}>
 		    <Ionicons name="reload-outline" size={16} color="#1b3022" />
 		    <Text style={styles.blocCardTitle}> {item.reps} {Number(item.reps) > 1 ? "tours" : "tour"} </Text>
 		    <Ionicons name="hourglass-outline" size={16} color="#1b3022" />
-		    <Text style={styles.blocCardTitle}> {item.repsBreakTime} s </Text>
+		    <Text style={styles.blocCardTitle}> {item.repsBreakTime} s de pause </Text>
                   </View>
 
                   {item.items.map((exerciseItem, exIndex) => (
                     <View key={exerciseItem.instanceId || exIndex} style={styles.exerciseItemRow}>
-                      <Text style={styles.exerciseName} numberOfLines={1}>
-                        - {exerciseItem.exercise.name}
-                      </Text>
-                      <Text style={styles.exerciseDetails}>
-                        {exerciseItem.reps ? `${exerciseItem.reps} reps` : ""} 
-                        {exerciseItem.breakTime ? ` (pause: ${exerciseItem.breakTime}s)` : ""}
-                      </Text>
+		      <Pressable onPress={() => router.push(`/exercise/${exerciseItem.exercise.id}`)}>
+			<View style={styles.card}>
+			  <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+			    <View style={{ flexShrink: 1, marginRight: 10 }}>
+			      <Text style={styles.cardTitle}>{exerciseItem.exercise.name}</Text>
+			    </View>
+			    <Text style={styles.exerciseDetails}>
+			      {exerciseItem.reps ? `${exerciseItem.reps} ${exerciseItem.type === "reps" ? "reps" : "s"}` : ""} 
+			      {exerciseItem.breakTime ? ` (pause: ${exerciseItem.breakTime}s)` : ""}
+			    </Text>
+			    <Ionicons name="chevron-forward" size={20} color="#8c9a92" />
+			  </View>
+			</View>
+		      </Pressable>
                     </View>
                   ))}
+		  <View style={{ flexDirection: "row", justifyContent: "center" }}>
+		    <Ionicons name="hourglass-outline" size={16} color="#1b3022" />
+		    <Text style={styles.blocCardTitle}> Temps de pause final : {item.finalBreakTime} s </Text>
+                  </View>
                 </View>
-              </View>
             </View>
           )}
         />
       </View>
 
-      <OptionsModal
+      <ProgramOptionsModal
         visible={showOptions}
         onClose={() => setShowOptions(false)}
         onEdit={handleEditProgram}
         onDelete={handleDeleteProgram}
+	onStartProgram={handleStartProgram}
       />
 
       <DeleteConfirmModal

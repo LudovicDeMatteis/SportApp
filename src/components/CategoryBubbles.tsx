@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Category } from "../../context/CategoriesContext.tsx";
+import { styles } from "../styles.ts";
 
 interface CategoryBubblesProps {
   categories: Category[];
@@ -26,25 +27,3 @@ export function CategoryBubbles({ categories, onRemove }: CategoryBubblesProps) 
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  bubblesContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 6,
-    marginBottom: 12,
-  },
-  bubbleList: {
-    backgroundColor: "#ffffff",
-    borderRadius: 16,
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "#eae8e1",
-    overflow: "hidden",
-  },
-  bubbleListItem: {
-    fontSize: 12,
-    color: "#1b3022",
-  },
-});

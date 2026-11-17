@@ -37,7 +37,8 @@ export async function saveExercises(exercises: Exercise[]): Promise<void> {
 export interface BlocItem {
   instanceId: string;
   exercise: Exercise;
-  reps: string;
+  reps: number;
+  type: "reps" | "s";
   breakTime: number;
 }
 

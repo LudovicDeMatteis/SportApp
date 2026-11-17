@@ -9,6 +9,7 @@ interface ExerciseContextType {
   addExercise: (name: string) => Promise<AddStatus>;
   updateExercise: (id: string, name: string, categories: Category[]) => Promise<void>;
   deleteExercise: (id: string) => Promise<void>;
+  importExercises: (exercises: Exercise[]) => Promise<void>;
 }
 
 const ExerciseContext = createContext<ExerciseContextType | undefined>(undefined);
@@ -64,9 +65,22 @@ export function ExerciseProvider({ children }: { children: ReactNode }) {
     setExercises(updatedExercises);
     await saveExercises(updatedExercises);
   };
+
+  const importExercises = async (importedExercises: Exercise[]) => {
+    setExercises(importedExercises);
+    await saveExercises(importedExercises);
+  };
   
   return (
-    <ExerciseContext.Provider value={{ exercises, loading, addExercise, updateExercise, deleteExercise }}>
+    <ExerciseContext.Provider 
+      value={{ 
+	exercises, 
+	loading, 
+	addExercise, 
+	updateExercise, 
+	deleteExercise,
+	importExercises,
+      }}>
       {children}
     </ExerciseContext.Provider>
   );

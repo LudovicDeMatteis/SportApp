@@ -7,6 +7,7 @@ interface ProgramContextType {
   addEmptyProgram: (name: string) => Promise<string>;
   updateProgram: (id: string, updatedData: Partial<Program>) => Promise<void>;
   deleteProgram: (id: string) => Promise<void>;
+  importPrograms: (programs: Program[]) => Promise<void>;
 }
 
 const ProgramContext = createContext<ProgramContextType | undefined>(undefined);
@@ -57,8 +58,21 @@ export function ProgramProvider({ children }: { children: ReactNode }) {
     await savePrograms(updatedPrograms);
   };
 
+  const importPrograms = async (importedPrograms: Program[]) => {
+    setPrograms(importedPrograms);
+    await savePrograms(importedPrograms);
+  };
+
   return (
-    <ProgramContext.Provider value={{ programs, loading, addEmptyProgram, deleteProgram, updateProgram }}>
+    <ProgramContext.Provider 
+      value={{ 
+	programs, 
+	loading, 
+	addEmptyProgram, 
+	deleteProgram, 
+	updateProgram,
+	importPrograms,
+      }}>
       {children}
     </ProgramContext.Provider>
   );

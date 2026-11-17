@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, FlatList, Pressable, Text, StyleSheet } from "react-native";
+import { View, TextInput, FlatList, Pressable, Text, StyleSheet, Keyboard } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Exercise } from "../../context/ExercisesContext.tsx";
 
@@ -59,6 +59,8 @@ export function ExerciseSearchDropdown({
                 onPress={() => {
                   onSelectExercise(item);
                   setSearchQuery("");
+		  setIsFocused(false);
+		  Keyboard.dismiss();
                 }}
               >
                 <Text style={styles.itemText}>{item.name}</Text>

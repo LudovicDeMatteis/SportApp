@@ -7,6 +7,7 @@ interface CategoryContextType {
   loading: boolean;
   addCategory: (name: string) => Promise<Category>;
   deleteCategory: (id: string) => Promise<void>;
+  importCategories: (categories: Category[]) => Promise<void>;
 }
 
 const CategoryContext = createContext<CategoryContextType | undefined>(undefined);
@@ -44,8 +45,20 @@ export function CategoryProvider({ children }: { children: ReactNode }) {
     await saveCategories(updatedCategories);
   };
 
+  const importCategories = async (importedCategories: Category[]) => {
+    setCategories(importedCategories);
+    await saveCategories(importedCategories);
+  };
+
   return (
-    <CategoryContext.Provider value={{ categories, loading, addCategory, deleteCategory }}>
+    <CategoryContext.Provider 
+      value={{ 
+	categories, 
+	loading, 
+	addCategory, 
+	deleteCategory,
+	importCategories,
+      }}>
       {children}
     </CategoryContext.Provider>
   );

@@ -16,6 +16,14 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: "#6b7c73",
   },
+  PrgBlocCard: {
+    flex: 1, 
+    borderColor: "#6b7c73", 
+    borderWidth: 1, 
+    borderRadius: 12, 
+    padding:4,
+    backgroundColor: "#faf9f5",
+  },
   card: {
     backgroundColor: "#ffffff",
     borderRadius: 16,
@@ -48,7 +56,7 @@ export const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: "#faf9f5",
-    height: "75%",
+    height: "85%",
     padding: 20,
     borderRadius: 10,
   },
@@ -103,7 +111,6 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 8,
-    marginBottom: 10, // Espace avant la barre de recherche
   },
   exercisesCategoriesContainer: {
     flexDirection: "row",
@@ -112,8 +119,6 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     gap: 6, 
     overflowX: "scroll",
-    overflowY: "hidden",
-    maxHeight: 20,
   },
   bubbleList: {
     backgroundColor: "#ffffff",
@@ -122,10 +127,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 8,
     borderWidth: 1,
     borderColor: "#eae8e1",
+    justifyContent: "center",
+    alignItems: "center",
   },
   bubbleListItem: {
     fontSize: 10,
     color: "#1b3022",
+    textAlign: "center",
   },
 
   // MODAL MORE OPTIONS
@@ -164,7 +172,6 @@ export const styles = StyleSheet.create({
     backgroundColor: "#eee",
     width: "100%",
   },
-
   // DELETE MODAL
   deleteModalBackdrop: {
     flex: 1,
@@ -360,12 +367,15 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   // Programs bloc cards
+  PrgDetailsBlocTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
   blocCard: {
     flexDirection: "row",
     alignItems: "flex-start",
     paddingVertical: 12,
     paddingHorizontal: 12,
-    marginBottom: 0,
   },
   blocCardActionsLeft: {
     flexDirection: "row",
@@ -376,7 +386,6 @@ export const styles = StyleSheet.create({
   blocCardTitle: {
     fontWeight: "bold",
     fontSize: 14,
-    color: "#1b3022",
     marginBottom: 6,
     marginRight: 6,
   },
@@ -402,6 +411,55 @@ export const styles = StyleSheet.create({
     fontStyle: "italic",
     marginLeft: 16,
     marginTop: 2,
+  },
+  congratsModalBackdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  congratsModalContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    paddingVertical: 4,
+    alignItems: "center",
+  },
+  congratsModalTitle: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  congratsModalButtonsContainer: {
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    gap: 10,
+    marginBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  congratsModalButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: "#1b3022",
+    borderRadius: 12,
+  },
+  congratsModalButtonText: {
+    marginLeft: 4,
+    fontSize: 16,
+    color: "#ffffff",
+    fontWeight: "800",
   },
 
 });
